@@ -1,0 +1,227 @@
+/* Variables CSS - Paleta de Colores NorEtel Mejorada */
+
+:root {
+  /* Colores Principales - Más Vibrantes */
+  --color-primary: #0099ff; /* Azul vibrante */
+  --color-primary-dark: #0066cc; /* Azul oscuro */
+  --color-primary-light: #33adff; /* Azul claro */
+  --color-secondary: #00cc66; /* Verde vibrante */
+  --color-secondary-dark: #009944; /* Verde oscuro */
+  --color-secondary-light: #33dd88; /* Verde claro */
+
+  /* Colores de Acento */
+  --color-accent: #ff6600; /* Naranja vibrante */
+  --color-accent-light: #ff9933; /* Naranja claro */
+  --color-purple: #9933ff; /* Púrpura vibrante */
+  --color-pink: #33d3ff; /* Rosa vibrante */
+  --color-yellow: #ffcc00; /* Amarillo vibrante */
+
+  /* Colores Base */
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* Variaciones de Azul - Más Vibrantes */
+  --color-blue-50: #e6f5ff;
+  --color-blue-100: #b3e0ff;
+  --color-blue-200: #80ccff;
+  --color-blue-300: #4db8ff;
+  --color-blue-400: #1aa3ff;
+  --color-blue-500: #0099ff; /* Principal */
+  --color-blue-600: #0080e6;
+  --color-blue-700: #0066cc;
+  --color-blue-800: #004db3;
+  --color-blue-900: #003399;
+  --color-blue-dark: #002680; /* Oscuro */
+
+  /* Variaciones de Verde - Más Vibrantes */
+  --color-green-50: #e6ffe6;
+  --color-green-100: #b3ffb3;
+  --color-green-200: #80ff80;
+  --color-green-300: #4dff4d;
+  --color-green-400: #1aff1a;
+  --color-green-500: #00cc00; /* Vibrante */
+  --color-green-600: #00b300;
+  --color-green-700: #009900;
+  --color-green-800: #008000;
+  --color-green-900: #006600;
+
+  /* Variaciones de Naranja */
+  --color-orange-50: #fff2e6;
+  --color-orange-100: #ffe0b3;
+  --color-orange-200: #ffcc80;
+  --color-orange-300: #ffb84d;
+  --color-orange-400: #ffa31a;
+  --color-orange-500: #ff8f00; /* Principal */
+  --color-orange-600: #e67e00;
+  --color-orange-700: #cc6d00;
+  --color-orange-800: #b35c00;
+  --color-orange-900: #994b00;
+
+  /* Grises */
+  --color-gray-50: #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+  --color-gray-900: #111827;
+
+  /* Colores de Estado - Más Vibrantes */
+  --color-success: #00cc66;
+  --color-success-light: #e6ffe6;
+  --color-warning: #ffcc00;
+  --color-warning-light: #fff9e6;
+  --color-error: #ff3366;
+  --color-error-light: #ffe6eb;
+  --color-info: var(--color-primary);
+  --color-info-light: var(--color-blue-50);
+
+  /* Gradientes - Mejorados y Más Dinámicos */
+  --gradient-primary: linear-gradient(135deg, #00a6ff 0%, #1471d5 100%);
+  --gradient-primary-reverse: linear-gradient(135deg, #0066cc 0%, #00ffb3 100%);
+  --gradient-secondary: linear-gradient(
+    135deg,
+    #05ff82 0%,
+    #00c056 100%
+  ); /* botones de lo quiero */
+  --gradient-secondary-reverse: linear-gradient(135deg, #009944 0%, #00cc66 100%);
+  --gradient-accent: linear-gradient(135deg, #1471d5 0%, #00ff91 100%);
+  --gradient-accent-reverse: linear-gradient(135deg, #1471d5 0%, #00ff91 100%);
+  --gradient-hero: linear-gradient(135deg, #0099ff 0%, #00cc66 100%);
+  --gradient-hero-reverse: linear-gradient(135deg, #00cc66 0%, #0099ff 100%);
+  --gradient-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
+
+  /* Nuevos Gradientes Vibrantes */
+  --gradient-dark-reverse: linear-gradient(135deg, #114cc2 0%, #148414 100%); /* Dark Reverse */
+  --gradient-tropical: linear-gradient(135deg, #00ccb4 0%, #99cf05 100%);
+  --gradient-cosmic: linear-gradient(135deg, #0099ff 0%, #9933ff 50%, #33e4ff 100%);
+  --gradient-light: linear-gradient(135deg, #e6f5ff 0%, #e6ffe6 100%);
+  --gradient-dark: linear-gradient(135deg, #114cc2 0%, #14dc14 100%);
+
+  /* Gradientes con Transparencia */
+  --gradient-primary-transparent: linear-gradient(
+    135deg,
+    rgba(0, 153, 255, 0.9) 0%,
+    rgba(0, 102, 204, 0.9) 100%
+  );
+  --gradient-secondary-transparent: linear-gradient(
+    135deg,
+    rgba(0, 204, 102, 0.9) 0%,
+    rgba(0, 153, 68, 0.9) 100%
+  );
+  --gradient-accent-transparent: linear-gradient(
+    135deg,
+    rgba(255, 102, 0, 0.9) 0%,
+    rgba(255, 153, 51, 0.9) 100%
+  );
+
+  /* Sombras - Mejoradas */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+
+  /* Sombras con Color - Más Vibrantes */
+  --shadow-primary: 0 10px 25px -5px rgba(0, 153, 255, 0.4);
+  --shadow-secondary: 0 10px 25px -5px rgba(0, 204, 102, 0.4);
+  --shadow-accent: 0 10px 25px -5px rgba(255, 102, 0, 0.4);
+  --shadow-purple: 0 10px 25px -5px rgba(153, 51, 255, 0.4);
+  --shadow-pink: 0 10px 25px -5px rgba(255, 51, 153, 0.4);
+  --shadow-yellow: 0 10px 25px -5px rgba(255, 204, 0, 0.4);
+
+  /* Tipografía */
+  --font-family-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-heading: 'Poppins', 'Inter', sans-serif;
+
+  --font-size-xs: 0.75rem; /* 12px */
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem; /* 16px */
+  --font-size-lg: 1.125rem; /* 18px */
+  --font-size-xl: 1.25rem; /* 20px */
+  --font-size-2xl: 1.5rem; /* 24px */
+  --font-size-3xl: 1.875rem; /* 30px */
+  --font-size-4xl: 2.25rem; /* 36px */
+  --font-size-5xl: 3rem; /* 48px */
+  --font-size-6xl: 3.75rem; /* 60px */
+
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
+
+  /* Espaciado */
+  --spacing-0: 0;
+  --spacing-1: 0.25rem; /* 4px */
+  --spacing-2: 0.5rem; /* 8px */
+  --spacing-3: 0.75rem; /* 12px */
+  --spacing-4: 1rem; /* 16px */
+  --spacing-5: 1.25rem; /* 20px */
+  --spacing-6: 1.5rem; /* 24px */
+  --spacing-8: 2rem; /* 32px */
+  --spacing-10: 2.5rem; /* 40px */
+  --spacing-12: 3rem; /* 48px */
+  --spacing-16: 4rem; /* 64px */
+  --spacing-20: 5rem; /* 80px */
+  --spacing-24: 6rem; /* 96px */
+
+  /* Border Radius */
+  --radius-none: 0;
+  --radius-sm: 0.25rem; /* 4px */
+  --radius-base: 0.5rem; /* 8px */
+  --radius-md: 0.75rem; /* 12px */
+  --radius-lg: 1rem; /* 16px */
+  --radius-xl: 1.5rem; /* 24px */
+  --radius-2xl: 2rem; /* 32px */
+  --radius-full: 9999px;
+
+  /* Transiciones */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 250ms ease-in-out;
+  --transition-slow: 350ms ease-in-out;
+  --transition-bounce: 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Z-index */
+  --z-index-dropdown: 1000;
+  --z-index-sticky: 1020;
+  --z-index-fixed: 1030;
+  --z-index-modal-backdrop: 1040;
+  --z-index-modal: 1050;
+  --z-index-popover: 1060;
+  --z-index-tooltip: 1070;
+  --z-index-chat: 1080;
+
+  /* Contenedor */
+  --container-max-width: 1280px;
+  --container-padding: var(--spacing-4);
+
+  /* Navbar */
+  --navbar-height: 70px;
+  --navbar-height-mobile: 60px;
+
+  /* Breakpoints (para uso en JS) */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* Dark Mode (Opcional - para futuro) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: var(--color-gray-900);
+    --color-text: var(--color-gray-100);
+  }
+}
