@@ -227,7 +227,8 @@ import HeroCarousel from '@/components/home/HeroCarousel.vue'
 import ButtonPrimary from '@/components/ui/ButtonPrimary.vue'
 import ButtonOutline from '@/components/ui/ButtonOutline.vue'
 import ButtonSecondary from '@/components/ui/ButtonSecondary.vue'
-import ChatWidget from '@/components/common/ChatWidget.vue'
+import ChatWidget from '@/components/common/ChatWidget.vue',
+
 
 const router = useRouter()
 
@@ -237,6 +238,7 @@ const quickActions = ref([
   { id: 3, icon: '📱', text: 'Planes móviles', route: '/productos/tarifa-movil' },
   { id: 4, icon: '📍', text: 'Cotiza tu zona', route: '/herramientas/solicitar-zona' },
   { id: 5, icon: '⚡', text: 'Test de velocidad', route: '/herramientas/speed-test' },
+  { id: 6, icon: '💬', text: 'Atención al cliente', route: '/soporte' },
 ])
 
 const offers = ref([

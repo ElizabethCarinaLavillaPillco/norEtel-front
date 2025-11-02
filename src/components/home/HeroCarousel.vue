@@ -114,7 +114,7 @@ const slides = ref([
     gradient: 'linear-gradient(to left, rgba(0,0,0,0), rgba(0,0,0,0.5))',
   },
   {
-    title: 'Internet portátil 4G/5G y línea ilimitada Whatsapp + Facebook + TikTok',
+    title: 'Internet portátil 4G/5G + Whatsapp/Facebook ilimitada',
     subtitle: 'Conéctate donde quieras. Primeros 50GB a velocidad 5G',
     price: 's/.90',
     oldPrice: 's/.138.90',
@@ -471,12 +471,14 @@ onUnmounted(() => {
 
   .carousel-controls {
     margin-top: var(--spacing-4);
+    justify-content: center;
+    align-items: center;
   }
 }
 
 @media (max-width: 768px) {
   .hero-carousel {
-    height: 400px;
+    height: 460px;
   }
 
   .hero-title {
@@ -493,7 +495,7 @@ onUnmounted(() => {
 
   .hero-actions {
     justify-content: center;
-    flex-wrap: wrap;
+    align-items: center;
   }
 
   .carousel-navigation {
