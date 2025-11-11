@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import PlanesView from '../views/PlanesView.vue'
 import PromotionView from '../views/PromotionView.vue'
 import DetailView from '../views/DetailsView.vue'
+import CoverageChecker from '@/views/CoverageChecker.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,6 +42,15 @@ const router = createRouter({
       path: '/promotion',
       name: 'promotion',
       component: PromotionView,
+    },
+    {
+      path: '/cobertura',
+      alias: '/herramientas/solicitar-zona', // Esto permite que ambas rutas funcionen
+      name: 'CoverageChecker',
+      component: CoverageChecker,
+      meta: {
+        title: 'Verificar Cobertura - NorEtel',
+      },
     },
   ],
   scrollBehavior(to, from, savedPosition) {

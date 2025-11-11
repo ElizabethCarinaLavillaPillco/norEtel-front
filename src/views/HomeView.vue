@@ -39,6 +39,8 @@
               <div class="speed-duration">{{ offer.duration }}</div>
             </div>
             <div class="offer-details">
+              t¿G
+
               <h3 class="offer-title">{{ offer.title }}</h3>
               <div class="offer-includes">
                 <div class="includes-title">Incluye:</div>
@@ -117,7 +119,7 @@
                 <div class="stat-label">Uptime garantizado</div>
               </div>
             </div>
-            <ButtonPrimary>Solicita tu zona</ButtonPrimary>
+            <ButtonPrimary @click="navigateTo('/cobertura')"> Solicita tu zona </ButtonPrimary>
           </div>
           <div class="coverage-map">
             <div class="map-placeholder">
@@ -227,8 +229,7 @@ import HeroCarousel from '@/components/home/HeroCarousel.vue'
 import ButtonPrimary from '@/components/ui/ButtonPrimary.vue'
 import ButtonOutline from '@/components/ui/ButtonOutline.vue'
 import ButtonSecondary from '@/components/ui/ButtonSecondary.vue'
-import ChatWidget from '@/components/common/ChatWidget.vue',
-
+import ChatWidget from '@/components/common/ChatWidget.vue'
 
 const router = useRouter()
 
@@ -236,7 +237,7 @@ const quickActions = ref([
   { id: 1, icon: '🏠', text: 'Planes internet hogar', route: '/hogar' },
   { id: 2, icon: '⭐', text: 'Los más vendidos', route: '/productos/planes?filter=popular' },
   { id: 3, icon: '📱', text: 'Planes móviles', route: '/productos/tarifa-movil' },
-  { id: 4, icon: '📍', text: 'Cotiza tu zona', route: '/herramientas/solicitar-zona' },
+  { id: 4, icon: '📍', text: 'Cotiza tu zona', route: '/cobertura' },
   { id: 5, icon: '⚡', text: 'Test de velocidad', route: '/herramientas/speed-test' },
   { id: 6, icon: '💬', text: 'Atención al cliente', route: '/soporte' },
 ])
@@ -303,6 +304,9 @@ const offers = ref([
   },
 ])
 
+function goToCoverageZones() {
+  router.push('/coverage-zones')
+}
 const navigateTo = (route) => {
   router.push(route)
 }
