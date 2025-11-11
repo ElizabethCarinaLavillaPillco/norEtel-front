@@ -1113,6 +1113,7 @@ onUnmounted(() => {
 
 @media (min-width: 1280px) {
   .sales-line-btn {
+    display: flex;
   }
 }
 

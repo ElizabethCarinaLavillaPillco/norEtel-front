@@ -522,12 +522,18 @@ const cuscoData = {
   },
 }
 
-// Zonas con cobertura (simulado - Cusco centro)
+// Zonas con cobertura (Solo San Jerónimo está activo)
 const coverageZones = [
-  { lat: -13.5319, lng: -71.9675, radius: 2, quality: 'excelente' }, // Centro Cusco
-  { lat: -13.5234, lng: -71.9478, radius: 1.5, quality: 'buena' }, // San Sebastián
-  { lat: -13.5127, lng: -71.978, radius: 1, quality: 'buena' }, // Santiago
-  { lat: -13.5395, lng: -71.9556, radius: 1, quality: 'estable' }, // Wanchaq
+  {
+    lat: -13.5367,
+    lng: -71.8869,
+    radius: 3, // 3km de radio para cubrir todo San Jerónimo
+    quality: 'excelente',
+    name: 'San Jerónimo',
+  },
+  // Puedes agregar más zonas cuando estén disponibles:
+  // { lat: -13.5319, lng: -71.9675, radius: 2, quality: 'excelente', name: 'Centro Cusco' },
+  // { lat: -13.5234, lng: -71.9478, radius: 1.5, quality: 'buena', name: 'San Sebastián' },
 ]
 
 // Computed
@@ -602,13 +608,14 @@ const checkAddressCoverage = async () => {
 }
 
 const checkDistrictCoverage = (district) => {
-  // Distritos con cobertura en Cusco
+  // Solo San Jerónimo tiene cobertura activa
   const coveredDistricts = {
-    Cusco: 'excelente',
-    'San Sebastián': 'buena',
-    Santiago: 'buena',
-    Wanchaq: 'estable',
-    'San Jerónimo': 'estable',
+    'San Jerónimo': 'excelente',
+    // Cuando otros distritos tengan cobertura, agrégalos aquí:
+    // 'Cusco': 'excelente',
+    // 'San Sebastián': 'buena',
+    // 'Santiago': 'buena',
+    // 'Wanchaq': 'estable',
   }
 
   if (coveredDistricts[district]) {

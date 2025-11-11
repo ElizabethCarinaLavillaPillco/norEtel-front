@@ -85,7 +85,9 @@
             <p class="custom-plan-subtitle">
               Y ahora llévate fibra 1Gb <strong>¡a precio de 600Mb durante 6 meses!</strong>
             </p>
-            <ButtonSecondary>Personalizar ahora</ButtonSecondary>
+            <ButtonSecondary @click="$router.push('/configurador')">
+              Personalizar ahora
+            </ButtonSecondary>
           </div>
           <div class="custom-plan-illustration">
             <div class="illustration-circle"></div>

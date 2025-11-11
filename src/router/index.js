@@ -52,6 +52,18 @@ const router = createRouter({
         title: 'Verificar Cobertura - NorEtel',
       },
     },
+    {
+      path: '/herramientas/speed-test',
+      name: 'SpeedTest',
+      component: () => import('@/views/tools/SpeedTest.vue'),
+      meta: { title: 'Test de Velocidad - NorEtel' },
+    },
+    {
+      path: '/configurador',
+      name: 'PlanBuilder',
+      component: () => import('@/views/PlanBuilder.vue'),
+      meta: { title: 'Configura tu Plan - NorEtel' },
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     // Si hay una posición guardada (al usar el botón de atrás/adelante del navegador)
