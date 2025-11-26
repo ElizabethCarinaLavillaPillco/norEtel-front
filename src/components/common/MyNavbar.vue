@@ -51,25 +51,9 @@
             <span class="logo-text">NorEtel</span>
           </router-link>
 
-          <!-- Buscador (Desktop) -->
-          <div class="navbar-search">
-            <div class="search-container">
-              <input
-                type="text"
-                placeholder="Buscar planes, servicios..."
-                class="search-input"
-                v-model="searchQuery"
-              />
-              <button class="search-btn">
-                <svg viewBox="0 0 20 20" fill="currentColor">
-                  <path
-                    fill-rule="evenodd"
-                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                    clip-rule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
+          <!-- Nombre de la Empresa (reemplaza al buscador) -->
+          <div class="navbar-company-name">
+            <h1 class="company-name">NORETEL</h1>
           </div>
 
           <!-- Menú Principal (Desktop) -->
@@ -107,7 +91,7 @@
             </div>
 
             <!-- Plan Amigo -->
-            <router-link to="/plan-amigo" class="menu-link"> Plan Amigo </router-link>
+            <router-link to="/productos/plan-amigo" class="menu-link"> Plan Amigo </router-link>
           </div>
 
           <!-- Right Actions -->
@@ -242,7 +226,7 @@
                 <h3 class="mega-menu-title">Herramientas</h3>
                 <ul class="mega-menu-list">
                   <li>
-                    <router-link to="/herramientas/cotizador" class="mega-menu-link">
+                    <router-link to="/configurador" class="mega-menu-link">
                       <div class="link-icon">💰</div>
                       <div>
                         <div class="link-title">Cotizar Plan</div>
@@ -251,7 +235,7 @@
                     </router-link>
                   </li>
                   <li>
-                    <router-link to="/herramientas/cobertura" class="mega-menu-link">
+                    <router-link to="/cobertura" class="mega-menu-link">
                       <div class="link-icon">📍</div>
                       <div>
                         <div class="link-title">Cobertura</div>
@@ -354,6 +338,15 @@
                       </div>
                     </router-link>
                   </li>
+                  <li>
+                    <router-link to="/carreras" class="mega-menu-link">
+                      <div class="link-icon">💼</div>
+                      <div>
+                        <div class="link-title">Oportunidades laborales</div>
+                        <div class="link-description">Encuentra practicas profesionales</div>
+                      </div>
+                    </router-link>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -426,23 +419,9 @@
     <!-- Mobile Menu -->
     <div v-show="isMobileMenuOpen" class="mobile-menu">
       <div class="mobile-menu-content">
-        <!-- Buscador Móvil -->
-        <div class="mobile-search">
-          <input
-            type="text"
-            placeholder="Buscar..."
-            class="mobile-search-input"
-            v-model="searchQuery"
-          />
-          <button class="mobile-search-btn">
-            <svg viewBox="0 0 20 20" fill="currentColor">
-              <path
-                fill-rule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clip-rule="evenodd"
-              />
-            </svg>
-          </button>
+        <!-- Nombre de la Empresa Móvil (reemplaza al buscador) -->
+        <div class="mobile-company-name">
+          <h1 class="company-name">NORETEL</h1>
         </div>
 
         <!-- Para Quién -->
@@ -714,13 +693,16 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { useRouter } from 'vue-router'
+const authStore = useAuthStore()
+const router = useRouter()
 
 const isScrolled = ref(false)
 const isMobileMenuOpen = ref(false)
 const activeMegaMenu = ref(null)
 const activeSegment = ref('particulares')
 const openMobileSection = ref(null)
-const searchQuery = ref('')
 let closeTimer = null
 
 const segments = ref([
@@ -776,13 +758,13 @@ const closeMegaMenu = () => {
 }
 
 const handleLogin = () => {
-  console.log('Login')
   closeMobileMenu()
+  router.push('/auth/login')
 }
 
 const handleRegister = () => {
-  console.log('Register')
   closeMobileMenu()
+  router.push('/auth/register')
 }
 
 onMounted(() => {
@@ -971,54 +953,28 @@ onUnmounted(() => {
   }
 }
 
-/* Buscador */
-.navbar-search {
+/* Nombre de la Empresa (Desktop) */
+.navbar-company-name {
   display: none;
   flex: 1;
-  max-width: 500px;
-  margin: 0 var(--spacing-4);
+  text-align: center;
 }
 
 @media (min-width: 1024px) {
-  .navbar-search {
+  .navbar-company-name {
     display: block;
   }
 }
 
-.search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-.search-input {
-  width: 100%;
-  padding: var(--spacing-2) var(--spacing-4) var(--spacing-2) var(--spacing-10);
-  background: var(--color-gray-100);
-  border: none;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  transition: all var(--transition-base);
-}
-
-.search-input:focus {
-  outline: none;
-  background: var(--color-white);
-  box-shadow: var(--shadow-md);
-}
-
-.search-btn {
-  position: absolute;
-  left: var(--spacing-3);
-  background: none;
-  border: none;
-  color: var(--color-gray-500);
-  cursor: pointer;
-  width: 20px;
-  height: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.company-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+  letter-spacing: 2px;
 }
 
 /* Menu Desktop */
@@ -1442,47 +1398,17 @@ onUnmounted(() => {
   background: white;
 }
 
-/* Mobile Search */
-.mobile-search {
-  position: relative;
+/* Nombre de la Empresa Móvil */
+.mobile-company-name {
+  padding: 1rem 0;
+  text-align: center;
+  border-bottom: 1px solid var(--color-gray-200);
   margin-bottom: 1rem;
 }
 
-.mobile-search-input {
-  width: 100%;
-  padding: 0.75rem 3rem 0.75rem 1rem;
-  background: var(--color-gray-100);
-  border: 1px solid var(--color-gray-300);
-  border-radius: var(--radius-lg);
-  font-size: 1rem;
-}
-
-.mobile-search-input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0, 153, 255, 0.1);
-}
-
-.mobile-search-btn {
-  position: absolute;
-  right: 0.5rem;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--gradient-primary);
-  border: none;
-  color: white;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-base);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.mobile-search-btn svg {
-  width: 20px;
-  height: 20px;
+.mobile-company-name .company-name {
+  font-size: 2rem;
+  letter-spacing: 3px;
 }
 
 /* Mobile Section */

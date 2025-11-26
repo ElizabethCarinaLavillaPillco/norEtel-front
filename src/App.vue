@@ -6,12 +6,13 @@
     </main>
     <MyFooter />
   </div>
+  <NotificationToast />
 </template>
 
 <script>
 import MyNavbar from '@/components/common/MyNavbar.vue'
 import MyFooter from '@/components/common/MyFooter.vue'
-
+import NotificationToast from '@/components/common/NotificationToast.vue' // Asegúrate de que esta ruta es correcta
 export default {
   name: 'App',
   components: {

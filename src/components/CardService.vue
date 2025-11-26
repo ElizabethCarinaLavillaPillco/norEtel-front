@@ -1,12 +1,18 @@
 <template>
-  <div class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 max-w-sm mx-auto">
+  <div
+    class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 max-w-sm mx-auto"
+  >
     <!-- Header con gradiente -->
     <div class="bg-gradient-to-r from-lime-300 to-cyan-600 px-6 py-4 text-white relative">
       <div class="flex items-center justify-between mb-2">
         <h3 class="font-semibold text-lg">{{ planType }}</h3>
         <div v-if="showBadge" class="bg-white bg-opacity-20 rounded-full p-1">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clip-rule="evenodd"
+            />
           </svg>
         </div>
       </div>
@@ -17,9 +23,7 @@
       </div>
 
       <!-- Velocidad principal -->
-      <div class="text-3xl font-bold mb-1">
-        {{ speed }} Mbps
-      </div>
+      <div class="text-3xl font-bold mb-1">{{ speed }} Mbps</div>
 
       <!-- Descripción de velocidad -->
       <div class="text-white text-opacity-90 text-sm">
@@ -46,9 +50,16 @@
       </button>
 
       <!-- Información adicional -->
-      <div v-if="installationInfo" class="flex items-center justify-center text-cyan-600 text-sm mb-4 bg-cyan-50 rounded-lg py-2 px-3">
+      <div
+        v-if="installationInfo"
+        class="flex items-center justify-center text-cyan-600 text-sm mb-4 bg-cyan-50 rounded-lg py-2 px-3"
+      >
         <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          <path
+            fill-rule="evenodd"
+            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+            clip-rule="evenodd"
+          />
         </svg>
         {{ installationInfo }}
       </div>
@@ -58,8 +69,12 @@
         <div class="flex items-center text-gray-700">
           <div class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center mr-3">
             <svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z" clip-rule="evenodd" />
-          </svg>
+              <path
+                fill-rule="evenodd"
+                d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"
+                clip-rule="evenodd"
+              />
+            </svg>
           </div>
           <div>
             <div class="font-medium text-gray-900">{{ serviceType }}</div>
@@ -78,62 +93,62 @@ export default {
   props: {
     planType: {
       type: String,
-      default: 'Internet Fibra Óptica'
+      default: 'Internet Fibra Óptica',
     },
     previousSpeed: {
       type: String,
-      default: null // e.g., "150"
+      default: null, // e.g., "150"
     },
     speed: {
       type: String,
-      required: true // e.g., "200"
+      required: true, // e.g., "200"
     },
     speedDescription: {
       type: String,
-      default: 'Velocidad simétrica'
+      default: 'Velocidad simétrica',
     },
     price: {
       type: String,
-      required: true // e.g., "69.90"
+      required: true, // e.g., "69.90"
     },
     priceFrequency: {
       type: String,
-      default: 'al mes'
+      default: 'al mes',
     },
     buttonText: {
       type: String,
-      default: 'Comprar online'
+      default: 'Comprar online',
     },
     installationInfo: {
       type: String,
-      default: 'Instalación desde 24 horas!'
+      default: 'Instalación desde 24 horas!',
     },
     serviceType: {
       type: String,
-      default: 'Velocidad de internet Fibra'
+      default: 'Velocidad de internet Fibra',
     },
     downloadSpeed: {
       type: String,
-      default: '200'
+      default: '200',
     },
     uploadSpeed: {
       type: String,
-      default: '200'
+      default: '200',
     },
     showBadge: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
     handlePurchase() {
       this.$emit('purchase', {
         planType: this.planType,
         speed: this.speed,
-        price: this.price
+        price: this.price,
       })
-    }
-  }
+    },
+  },
 }
 </script>
 
@@ -149,11 +164,15 @@ export default {
 
 /* Sombras personalizadas */
 .shadow-lg {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow:
+    0 10px 15px -3px rgba(0, 0, 0, 0.1),
+    0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 .hover\:shadow-xl:hover {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
 /* Gradientes personalizados */

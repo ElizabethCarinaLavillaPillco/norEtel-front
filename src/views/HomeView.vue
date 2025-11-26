@@ -1,3 +1,5 @@
+import { plansData, getFeaturedPlans } from '@/data/plansData.js'
+
 <template>
   <div class="home-view">
     <!-- Hero Carousel -->
@@ -142,7 +144,9 @@
             <p class="referral-text">
               Recomienda NorEtel y gana descuentos especiales. ¡Tú y tu amigo recibirán beneficios!
             </p>
-            <ButtonPrimary>Conoce más</ButtonPrimary>
+            <ButtonPrimary @click="$router.push('/productos/plan-amigo')">
+              Conoce más
+            </ButtonPrimary>
           </div>
           <div class="referral-illustration">
             <div class="users-icon">👥</div>
@@ -210,11 +214,14 @@
 
     <!-- Trabaja con Nosotros -->
     <section class="careers-section">
+      s
       <div class="container">
         <div class="careers-banner">
           <h2 class="careers-title">¿Quieres formar parte de NorEtel?</h2>
           <p class="careers-subtitle">Únete a nuestro equipo y ayuda a conectar a más personas</p>
-          <ButtonOutline class="careers-btn">Ver oportunidades</ButtonOutline>
+          <ButtonPrimary class="careers-btn" @click="$router.push('/Carreras')">
+            Ver oportunidades
+          </ButtonPrimary>
         </div>
       </div>
     </section>
@@ -232,6 +239,7 @@ import ButtonPrimary from '@/components/ui/ButtonPrimary.vue'
 import ButtonOutline from '@/components/ui/ButtonOutline.vue'
 import ButtonSecondary from '@/components/ui/ButtonSecondary.vue'
 import ChatWidget from '@/components/common/ChatWidget.vue'
+import { plansData, getFeaturedPlans } from '@/data/plansData.js'
 
 const router = useRouter()
 
@@ -244,67 +252,19 @@ const quickActions = ref([
   { id: 6, icon: '💬', text: 'Atención al cliente', route: '/soporte' },
 ])
 
-const offers = ref([
-  {
-    id: 1,
-    badge: 'Recomendado',
-    price: '99.90',
-    condition: 'x6 meses, después paga s/.119.90',
-    oldSpeed: '500 Megas',
-    currentSpeed: '1000Mbps',
-    duration: 'x 12 meses',
-    title: 'Fibra + Móvil 300Mb',
-    includes: [
-      'Internet fibra optica de 1000mbps x6 meses',
-      '2 lineas moviles',
-      '1 TV + 33 canales',
-      'Soporte tecnico',
-    ],
-  },
-  {
-    id: 2,
-    badge: 'Popular',
-    price: '79.90',
-    condition: 'x3 meses, después paga s/.99.90',
-    oldSpeed: '300 Megas',
-    currentSpeed: '600Mbps',
-    duration: 'x 12 meses',
-    title: 'Fibra + Móvil 200Mb',
-    includes: [
-      'Internet fibra optica de 600mbps x3 meses',
-      '1 linea movil',
-      '1 TV + 20 canales',
-      'Soporte tecnico',
-    ],
-  },
-  {
-    id: 3,
-    badge: 'Oferta',
-    price: '59.90',
-    condition: 'x12 meses sin cambios',
-    oldSpeed: '200 Megas',
-    currentSpeed: '400Mbps',
-    duration: 'x 12 meses',
-    title: 'Fibra Básica',
-    includes: ['Internet fibra optica de 400mbps', 'Soporte tecnico', 'Instalación gratuita'],
-  },
-  {
-    id: 4,
-    badge: 'Negocios',
-    price: '199.90',
-    condition: 'x12 meses sin cambios',
-    oldSpeed: '800 Megas',
-    currentSpeed: '1000Mbps',
-    duration: 'x 12 meses',
-    title: 'Plan Empresarial',
-    includes: [
-      'Internet fibra optica de 1000mbps dedicada',
-      '5 lineas moviles',
-      'Soporte prioritario 24/7',
-      'IP fija',
-    ],
-  },
-])
+const offers = ref(
+  plansData.ofertasBanner.map((banner) => ({
+    id: banner.id,
+    badge: banner.discount ? `${banner.discount} de descuento` : banner.title,
+    price: banner.promoPrice || '99.90',
+    condition: banner.duration,
+    oldSpeed: banner.originalSpeed || '500 Megas',
+    currentSpeed: banner.promoSpeed || '1000Mbps',
+    duration: banner.duration || 'x 12 meses',
+    title: banner.title,
+    includes: banner.benefits || banner.plans?.map((p) => `Plan ${p}`) || [],
+  })),
+)
 
 function goToCoverageZones() {
   router.push('/coverage-zones')

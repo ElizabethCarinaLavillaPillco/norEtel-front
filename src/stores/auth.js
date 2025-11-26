@@ -1,18 +1,27 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { authService } from '@/services/auth.service'
+import api from '@/services/api'
 
 export const useAuthStore = defineStore('auth', () => {
   // State
   const user = ref(null)
-  const token = ref(localStorage.getItem('token') || null)
+  const customer = ref(null)
+  const token = ref(localStorage.getItem('auth_token') || null)
   const isLoading = ref(false)
   const error = ref(null)
 
   // Getters
   const isAuthenticated = computed(() => !!token.value && !!user.value)
-  const isCustomer = computed(() => user.value?.role === 'customer')
-  const isAdmin = computed(() => user.value?.role === 'admin')
+  const isCustomer = computed(() => user.value?.roles?.some((role) => role.name === 'customer'))
+  const isAdmin = computed(() =>
+    user.value?.roles?.some((role) => ['super-admin', 'admin'].includes(role.name)),
+  )
+  const fullName = computed(() => {
+    if (customer.value) {
+      return customer.value.full_name
+    }
+    return user.value?.username || 'Usuario'
+  })
 
   // Actions
   async function login(credentials) {
@@ -20,15 +29,24 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const response = await authService.login(credentials)
-      token.value = response.token
-      user.value = response.user
+      const response = await api.post('/auth/login', credentials)
+      const data = response.data.data
 
-      localStorage.setItem('token', response.token)
+      token.value = data.token
+      user.value = data.user
+      customer.value = data.customer || null
+
+      localStorage.setItem('auth_token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      if (data.customer) {
+        localStorage.setItem('customer', JSON.stringify(data.customer))
+      }
 
       return true
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al iniciar sesión'
+      console.error('Login error:', err)
       return false
     } finally {
       isLoading.value = false
@@ -40,15 +58,24 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
 
     try {
-      const response = await authService.register(userData)
-      token.value = response.token
-      user.value = response.user
+      const response = await api.post('/auth/register', userData)
+      const data = response.data.data
 
-      localStorage.setItem('token', response.token)
+      token.value = data.token
+      user.value = data.user
+      customer.value = data.customer || null
+
+      localStorage.setItem('auth_token', data.token)
+      localStorage.setItem('user', JSON.stringify(data.user))
+
+      if (data.customer) {
+        localStorage.setItem('customer', JSON.stringify(data.customer))
+      }
 
       return true
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al registrar'
+      console.error('Register error:', err)
       return false
     } finally {
       isLoading.value = false
@@ -57,13 +84,16 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     try {
-      await authService.logout()
+      await api.post('/auth/logout')
     } catch (err) {
       console.error('Error al cerrar sesión:', err)
     } finally {
       user.value = null
+      customer.value = null
       token.value = null
-      localStorage.removeItem('token')
+      localStorage.removeItem('auth_token')
+      localStorage.removeItem('user')
+      localStorage.removeItem('customer')
     }
   }
 
@@ -72,30 +102,21 @@ export const useAuthStore = defineStore('auth', () => {
 
     isLoading.value = true
     try {
-      const response = await authService.getUser()
-      user.value = response.data
+      const response = await api.get('/auth/me')
+      const data = response.data.data
+
+      user.value = data.user
+      customer.value = data.customer || null
+
+      localStorage.setItem('user', JSON.stringify(data.user))
+      if (data.customer) {
+        localStorage.setItem('customer', JSON.stringify(data.customer))
+      }
     } catch (err) {
       console.error('Error al obtener usuario:', err)
-      // Si el token es inválido, cerrar sesión
       if (err.response?.status === 401) {
         logout()
       }
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  async function updateProfile(data) {
-    isLoading.value = true
-    error.value = null
-
-    try {
-      const response = await authService.updateProfile(data)
-      user.value = response.data
-      return true
-    } catch (err) {
-      error.value = err.response?.data?.message || 'Error al actualizar perfil'
-      return false
     } finally {
       isLoading.value = false
     }
@@ -105,9 +126,35 @@ export const useAuthStore = defineStore('auth', () => {
     error.value = null
   }
 
+  // Cargar datos del localStorage al iniciar
+  function initAuth() {
+    const savedUser = localStorage.getItem('user')
+    const savedCustomer = localStorage.getItem('customer')
+
+    if (savedUser) {
+      try {
+        user.value = JSON.parse(savedUser)
+      } catch (e) {
+        console.error('Error parsing user:', e)
+      }
+    }
+
+    if (savedCustomer) {
+      try {
+        customer.value = JSON.parse(savedCustomer)
+      } catch (e) {
+        console.error('Error parsing customer:', e)
+      }
+    }
+  }
+
+  // Inicializar al crear el store
+  initAuth()
+
   return {
     // State
     user,
+    customer,
     token,
     isLoading,
     error,
@@ -116,13 +163,13 @@ export const useAuthStore = defineStore('auth', () => {
     isAuthenticated,
     isCustomer,
     isAdmin,
+    fullName,
 
     // Actions
     login,
     register,
     logout,
     fetchUser,
-    updateProfile,
     clearError,
   }
 })

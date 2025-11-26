@@ -394,7 +394,6 @@ const calculateBasePrice = () => {
 const calculateBoostPrice = () => {
   if (!boostEnabled.value || boostDays.value.length === 0) return 0
 
-  const speedIncrease = ((boostSpeed.value - selectedSpeed.value) / selectedSpeed.value) * 100
   const hoursPerDay = calculateBoostHours()
   const daysPerMonth = boostDays.value.length * 4 // Aproximado
 
@@ -408,8 +407,8 @@ const calculateBoostPrice = () => {
 const calculateBoostHours = () => {
   if (!boostStartTime.value || !boostEndTime.value) return 0
 
-  const [startH, startM] = boostStartTime.value.split(':').map(Number)
-  const [endH, endM] = boostEndTime.value.split(':').map(Number)
+  const [startH] = boostStartTime.value.split(':').map(Number)
+  const [endH] = boostEndTime.value.split(':').map(Number)
 
   let hours = endH - startH
   if (hours < 0) hours += 24 // Maneja cruce de medianoche

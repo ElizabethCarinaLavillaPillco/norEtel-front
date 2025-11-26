@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { plansService } from '@/services/plans.service'
+import api from '@/services/api'
 
 export const usePlansStore = defineStore('plans', () => {
-  // State
+  // ==================== STATE ====================
   const plans = ref([])
+  const promotions = ref([])
   const currentPlan = ref(null)
   const filters = ref({
     type: null, // 'fibra', 'movil', 'combo'
@@ -15,7 +16,7 @@ export const usePlansStore = defineStore('plans', () => {
   const isLoading = ref(false)
   const error = ref(null)
 
-  // Getters
+  // ==================== GETTERS ====================
   const filteredPlans = computed(() => {
     let filtered = plans.value
 
@@ -53,43 +54,85 @@ export const usePlansStore = defineStore('plans', () => {
     }
   })
 
-  // Actions
+  // ==================== ACTIONS ====================
+
+  // Obtener todos los planes desde el backend
   async function fetchPlans() {
     isLoading.value = true
     error.value = null
 
     try {
-      const response = await plansService.getAll()
-      plans.value = response.data
+      const response = await api.get('/public/plans')
+      plans.value = response.data.data || response.data
+      return plans.value
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al cargar planes'
       console.error('Error fetching plans:', err)
+      throw err
     } finally {
       isLoading.value = false
     }
   }
 
+  // Obtener promociones activas
+  async function fetchPromotions() {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await api.get('/public/promotions')
+      promotions.value = response.data.data || response.data
+      return promotions.value
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al cargar promociones'
+      console.error('Error fetching promotions:', err)
+      throw err
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Obtener un plan específico por ID
   async function fetchPlanById(id) {
     isLoading.value = true
     error.value = null
 
     try {
-      const response = await plansService.getById(id)
-      currentPlan.value = response.data
+      const response = await api.get(`/public/plans/${id}`)
+      currentPlan.value = response.data.data || response.data
       return currentPlan.value
     } catch (err) {
       error.value = err.response?.data?.message || 'Error al cargar plan'
       console.error('Error fetching plan:', err)
-      return null
+      throw err
     } finally {
       isLoading.value = false
     }
   }
 
+  // Crear cotización de plan personalizado
+  async function createQuote(quoteData) {
+    isLoading.value = true
+    error.value = null
+
+    try {
+      const response = await api.post('/public/quote', quoteData)
+      return response.data
+    } catch (err) {
+      error.value = err.response?.data?.message || 'Error al crear cotización'
+      console.error('Error creating quote:', err)
+      throw err
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  // Establecer filtros
   function setFilters(newFilters) {
     filters.value = { ...filters.value, ...newFilters }
   }
 
+  // Resetear filtros
   function resetFilters() {
     filters.value = {
       type: null,
@@ -99,13 +142,16 @@ export const usePlansStore = defineStore('plans', () => {
     }
   }
 
+  // Limpiar error
   function clearError() {
     error.value = null
   }
 
+  // ==================== RETURN ====================
   return {
     // State
     plans,
+    promotions,
     currentPlan,
     filters,
     isLoading,
@@ -118,7 +164,9 @@ export const usePlansStore = defineStore('plans', () => {
 
     // Actions
     fetchPlans,
+    fetchPromotions,
     fetchPlanById,
+    createQuote,
     setFilters,
     resetFilters,
     clearError,

@@ -458,10 +458,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { coverageService } from '@/services/coverage.service' // 👈 NUEVO
+import { useUiStore } from '@/stores/ui' // 👈 NUEVO (para notificaciones)
 
 const router = useRouter()
+const uiStore = useUiStore() // 👈 NUEVO
 
 // Estados principales
 const currentStep = ref('search') // search, map, result, request, confirmation
@@ -572,39 +575,69 @@ const availablePlans = computed(() => {
 const checkAddressCoverage = async () => {
   isLoading.value = true
 
-  // Log de búsqueda
-  logSearch('address', getAddressString())
+  try {
+    // Log de búsqueda (mantener para analytics)
+    logSearch('address', getAddressString())
 
-  // Simular verificación de cobertura
-  await new Promise((resolve) => setTimeout(resolve, 2000))
+    // ✅ LLAMADA AL BACKEND
+    const response = await coverageService.checkCoverageByAddress({
+      department: address.value.department,
+      province: address.value.province,
+      district: address.value.district,
+      street: address.value.street,
+      number: address.value.number,
+      reference: address.value.reference,
+    })
 
-  // Verificar cobertura basada en distrito
-  const hasCoverage = checkDistrictCoverage(address.value.district)
+    const data = response.data
 
-  if (hasCoverage) {
-    coverageResult.value = {
-      status: 'available',
-      title: '¡Excelente noticia! 🎉',
-      message: `Tenemos cobertura en ${address.value.district}, ${address.value.province}`,
-      quality: hasCoverage.quality,
-      location: address.value,
+    // Verificar respuesta del backend
+    if (data.has_coverage) {
+      coverageResult.value = {
+        status: 'available',
+        title: '¡Excelente noticia! 🎉',
+        message: data.message || `Tenemos cobertura en ${address.value.district}`,
+        quality: data.quality || 'buena',
+        location: address.value,
+        zone: data.zone, // Información de la zona desde el backend
+      }
+      currentStep.value = 'result'
+
+      // Guardar datos del cliente
+      saveCustomerData('address_check', address.value)
+    } else {
+      // Sin cobertura - Mostrar opción de solicitud
+      coverageResult.value = {
+        status: 'unavailable',
+        title: 'Aún no llegamos a tu zona 😔',
+        message:
+          data.message ||
+          'Actualmente no tenemos cobertura en tu ubicación, pero puedes solicitar que llegue el servicio.',
+      }
+      currentStep.value = 'result'
     }
-    currentStep.value = 'result'
+  } catch (error) {
+    console.error('Error al verificar cobertura:', error)
 
-    // Guardar datos del cliente
-    saveCustomerData('address_check', address.value)
-  } else {
-    // Si no hay cobertura, mostrar mapa para ubicación precisa
-    coverageResult.value = {
-      status: 'unavailable',
-      title: 'No encontramos cobertura automática',
+    // Mostrar mensaje de error al usuario
+    uiStore.showNotification({
+      type: 'error',
       message:
-        'No pudimos verificar automáticamente la cobertura en tu dirección. Por favor, marca tu ubicación en el mapa para una verificación precisa.',
-    }
-    currentStep.value = 'map'
-  }
+        error.friendlyMessage || 'Error al verificar cobertura. Por favor, intenta nuevamente.',
+    })
 
-  isLoading.value = false
+    // Si hay error de red, mostrar opción de usar mapa
+    if (error.request && !error.response) {
+      coverageResult.value = {
+        status: 'unavailable',
+        title: 'No pudimos verificar tu dirección',
+        message: 'Verifica tu conexión a internet o intenta seleccionar tu ubicación en el mapa.',
+      }
+      currentStep.value = 'map'
+    }
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const checkDistrictCoverage = (district) => {
@@ -774,43 +807,69 @@ const getDistance = (point1, point2) => {
 }
 
 const checkMapCoverage = async () => {
-  isLoading.value = true
-
-  // Log de búsqueda
-  logSearch(
-    'map',
-    `${selectedLocation.value.lat.toFixed(6)}, ${selectedLocation.value.lng.toFixed(6)}`,
-  )
-
-  // Simular verificación
-  await new Promise((resolve) => setTimeout(resolve, 1500))
-
-  // Verificar si está en zona de cobertura
-  const coverage = checkLocationCoverage(selectedLocation.value)
-
-  if (coverage) {
-    coverageResult.value = {
-      status: 'available',
-      title: '¡Genial! Tenemos cobertura en tu zona 🎉',
-      message: `La calidad de señal en tu ubicación es ${coverage.quality}`,
-      quality: coverage.quality,
-      location: selectedLocation.value,
-    }
-    currentStep.value = 'result'
-
-    // Guardar datos
-    saveCustomerData('map_check', selectedLocation.value)
-  } else {
-    coverageResult.value = {
-      status: 'unavailable',
-      title: 'Aún no llegamos a tu zona 😔',
-      message:
-        'Actualmente no tenemos cobertura en tu ubicación, pero estamos expandiendo nuestra red constantemente.',
-    }
-    currentStep.value = 'result'
+  if (!selectedLocation.value) {
+    alert('Por favor, selecciona una ubicación en el mapa')
+    return
   }
 
-  isLoading.value = false
+  isLoading.value = true
+
+  try {
+    // Log de búsqueda
+    logSearch(
+      'map',
+      `${selectedLocation.value.lat.toFixed(6)}, ${selectedLocation.value.lng.toFixed(6)}`,
+    )
+
+    // ✅ LLAMADA AL BACKEND
+    const response = await coverageService.checkCoverage({
+      lat: selectedLocation.value.lat,
+      lng: selectedLocation.value.lng,
+    })
+
+    const data = response.data
+
+    if (data.has_coverage) {
+      coverageResult.value = {
+        status: 'available',
+        title: '¡Genial! Tenemos cobertura en tu zona 🎉',
+        message: data.message || `La calidad de señal en tu ubicación es ${data.quality}`,
+        quality: data.quality || 'buena',
+        location: selectedLocation.value,
+        zone: data.zone,
+      }
+      currentStep.value = 'result'
+
+      // Guardar datos
+      saveCustomerData('map_check', selectedLocation.value)
+    } else {
+      // Obtener estadísticas de la zona
+      const statsResponse = await coverageService.getZoneStats({
+        lat: selectedLocation.value.lat,
+        lng: selectedLocation.value.lng,
+      })
+
+      requestCount.value = statsResponse.data.request_count || 0
+
+      coverageResult.value = {
+        status: 'unavailable',
+        title: 'Aún no llegamos a tu zona 😔',
+        message:
+          data.message ||
+          'Actualmente no tenemos cobertura en tu ubicación, pero estamos expandiendo nuestra red constantemente.',
+      }
+      currentStep.value = 'result'
+    }
+  } catch (error) {
+    console.error('Error al verificar cobertura:', error)
+
+    uiStore.showNotification({
+      type: 'error',
+      message: error.friendlyMessage || 'Error al verificar cobertura en el mapa.',
+    })
+  } finally {
+    isLoading.value = false
+  }
 }
 
 const checkLocationCoverage = (location) => {
